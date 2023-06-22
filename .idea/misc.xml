@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="IlluminatedCloudWorkspaceSettings">
+    <option name="projectWorkspaceSettings">
+      <ProjectWorkspaceSettings>
+        <option name="connectionWorkspaceSettings">
+          <map>
+            <entry key="New Connection">
+              <value>
+                <ConnectionWorkspaceSettings />
+              </value>
+            </entry>
+          </map>
+        </option>
+      </ProjectWorkspaceSettings>
+    </option>
+  </component>
+  <component name="ProjectRootManager">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
