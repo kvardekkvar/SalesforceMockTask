@@ -1,0 +1,4 @@
+<aura:component implements="lightning:isUrlAddressable,flexipage:availableForAllPageTypes" description="c:orderManager component" access="global">
+    Here is my shiny component:
+    <c:order_manager/>
+</aura:component>
