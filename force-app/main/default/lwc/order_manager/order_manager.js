@@ -5,10 +5,12 @@ import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { getPicklistValues } from 'lightning/uiObjectInfoApi';
 
 import getFilteredProducts from '@salesforce/apex/OrderManagerController.getFilteredProducts';
+import Id from '@salesforce/user/Id';
 
 import Product__c from '@salesforce/schema/Product__c';
 import Product__c_Type__c from '@salesforce/schema/Product__c.Type__c';
 import Product__c_Family__c from '@salesforce/schema/Product__c.Family__c';
+import User_IsManager__c from '@salesforce/schema/User.IsManager__c';
 
     const FIELDS = [
     'Account.Name',
@@ -16,6 +18,8 @@ import Product__c_Family__c from '@salesforce/schema/Product__c.Family__c';
     ];
 
 export default class Order_manager extends LightningElement {
+
+    userId = Id;
 
     @track
     typeFilter = '';
@@ -30,6 +34,9 @@ export default class Order_manager extends LightningElement {
 
     @wire(getRecord, { recordId: "$accountId", fields: FIELDS })
     account;
+
+    @wire(getRecord, { recordId: "$userId", fields: [User_isManager__c] })
+    user;
 
     @wire(getFilteredProducts, { filterType: "$typeFilter", filterFamily: "$familyFilter" })
     products;
@@ -53,6 +60,9 @@ export default class Order_manager extends LightningElement {
         return this.account.data?.fields.AccountNumber.value;
     }
 
+    get isManager(){
+        return this.user.data?.fields.IsManager__c.value;
+    }
     handleTypeFilter(event) {
         var previous = this.template.querySelector('.type-filter_selected');
         if (previous) {

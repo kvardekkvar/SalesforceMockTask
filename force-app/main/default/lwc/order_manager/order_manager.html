@@ -3,7 +3,7 @@
         <p class="header__accName" lwc:if={account.data}>{accountName}</p>
         <p class="header__accNumber" lwc:if={account.data}>{accountNumber}</p>
         <div class="header__buttons">
-            <button class="button header__buttons__button">Create a product</button>
+            <button lwc:if={isManager} class="button header__buttons__button">Create a product</button>
             <button class="button header__buttons__button">Cart</button>
         </div>
     </header>
