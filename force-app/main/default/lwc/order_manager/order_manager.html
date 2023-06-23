@@ -9,38 +9,41 @@
     </header>
     <section class="main">
         <form class="main__controls">
-            <p>Filter</p>
+            <p class="main__controls__header">Filter</p>
             <p>Type:</p>
-            <ul>
-
+            <ul lwc:if={typePicklistValues.data}>
+                <template for:each={typePicklistValues.data.values} for:item="type">
+                    <li key={type.value}> - <span lwc:if={isSelected}>V</span> <a data-id={type.value} href="#"
+                                               onclick={handleTypeFilter}>{type.value} </a>
+                    </li>
+                </template>
+                <li> - <span lwc:if={isSelected}>V</span> <a data-id="" href="#" onclick={handleTypeFilter}> Any </a></li>
             </ul>
             <p>Family:</p>
-            <ul>
-
+            <ul lwc:if={familyPicklistValues.data}>
+                <template for:each={familyPicklistValues.data.values} for:item="family">
+                    <li key={family.value}> - <span lwc:if={isSelected}>V</span> <a data-id={family.value} href="#" onclick={handleFamilyFilter}>
+                        {family.value} </a></li>
+                </template>
+                <li> - <span lwc:if={isSelected}>V</span> <a data-id="" href="#" onclick={handleFamilyFilter}> Any </a></li>
             </ul>
+
         </form>
         <div class="main__content">
             <input class="main__content__search" type="text" name="search_products" placeholder="Search">
-                <ul class="main__content__cards">
-                    <li class="main__content__cards__card">
-                        <p class="main__content__cards_name">Product name</p>
-                        <p class="main__content__cards_description">Product description</p>
+            <ul lwc:if={products.data} class="main__content__cards">
+                <template for:each={products.data} for:item="product">
+                    <li key={product.Id} class="main__content__cards__card">
+
+                        <p class="main__content__cards_name">{product.Name}</p>
+                        <p class="main__content__cards_description">{product.Description__c}</p>
                         <div class="main__content__cards__button-container">
                             <button class="button">Details</button>
                             <button class="button">Add</button>
                         </div>
                     </li>
-
-                    <li class="main__content__cards__card">
-                        <p class="main__content__cards_name">Product name</p>
-                        <p class="main__content__cards_description">Product description</p>
-                        <div class="main__content__cards__button-container">
-                            <button class="button">Details</button>
-                            <button class="button">Add</button>
-                        </div>
-                    </li>
-
-                </ul>
+                </template>
+            </ul>
         </div>
     </section>
 </template>

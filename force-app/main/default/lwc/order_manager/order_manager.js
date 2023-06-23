@@ -1,6 +1,14 @@
-import { LightningElement, wire } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import { CurrentPageReference } from 'lightning/navigation';
 import { getRecord } from 'lightning/uiRecordApi';
+import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import { getPicklistValues } from 'lightning/uiObjectInfoApi';
+
+import getFilteredProducts from '@salesforce/apex/OrderManagerController.getFilteredProducts';
+
+import Product__c from '@salesforce/schema/Product__c';
+import Product__c_Type__c from '@salesforce/schema/Product__c.Type__c';
+import Product__c_Family__c from '@salesforce/schema/Product__c.Family__c';
 
     const FIELDS = [
     'Account.Name',
@@ -9,6 +17,11 @@ import { getRecord } from 'lightning/uiRecordApi';
 
 export default class Order_manager extends LightningElement {
 
+    @track
+    typeFilter = '';
+
+    @track
+    familyFilter = '';
 
     @wire(CurrentPageReference)
     setCurrentPageReference(currentPageReference) {
@@ -18,7 +31,16 @@ export default class Order_manager extends LightningElement {
     @wire(getRecord, { recordId: "$accountId", fields: FIELDS })
     account;
 
+    @wire(getFilteredProducts, { filterType: "$typeFilter", filterFamily: "$familyFilter" })
+    products;
 
+    @wire(getObjectInfo, { objectApiName: Product__c })
+    productObjectInfo;
+
+    @wire(getPicklistValues, { recordTypeId: '$productObjectInfo.data.defaultRecordTypeId', fieldApiName: Product__c_Type__c })
+    typePicklistValues;
+    @wire(getPicklistValues, { recordTypeId: '$productObjectInfo.data.defaultRecordTypeId', fieldApiName: Product__c_Family__c })
+    familyPicklistValues;
     get accountId() {
         return this.currentPageReference?.state?.c__accountId;
     }
@@ -29,6 +51,24 @@ export default class Order_manager extends LightningElement {
 
     get accountNumber(){
         return this.account.data?.fields.AccountNumber.value;
+    }
+
+    handleTypeFilter(event) {
+        var previous = this.template.querySelector('.type-filter_selected');
+        if (previous) {
+            previous.classList.remove('type-filter_selected');
+        }
+        event.target.classList.add("type-filter_selected");
+        this.typeFilter = event.target.dataset.id;
+    }
+
+    handleFamilyFilter(event){
+        var previous = this.template.querySelector('.family-filter_selected');
+        if(previous) {
+            previous.classList.remove('family-filter_selected');
+        }
+        event.target.classList.add("family-filter_selected");
+        this.familyFilter = event.target.dataset.id;
     }
 
 }
