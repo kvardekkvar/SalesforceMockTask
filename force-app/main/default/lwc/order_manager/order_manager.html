@@ -1,7 +1,46 @@
 <template>
-<header class="header">
-    OLOLO TROLOLO!
+    <header class="header">
+        <p class="header__accName" lwc:if={account.data}>{accountName}</p>
+        <p class="header__accNumber" lwc:if={account.data}>{accountNumber}</p>
+        <div class="header__buttons">
+            <button class="button header__buttons__button">Create a product</button>
+            <button class="button header__buttons__button">Cart</button>
+        </div>
+    </header>
+    <section class="main">
+        <form class="main__controls">
+            <p>Filter</p>
+            <p>Type:</p>
+            <ul>
 
-    My LWC knows that Account has id {accountId}.
-</header>
+            </ul>
+            <p>Family:</p>
+            <ul>
+
+            </ul>
+        </form>
+        <div class="main__content">
+            <input class="main__content__search" type="text" name="search_products" placeholder="Search">
+                <ul class="main__content__cards">
+                    <li class="main__content__cards__card">
+                        <p class="main__content__cards_name">Product name</p>
+                        <p class="main__content__cards_description">Product description</p>
+                        <div class="main__content__cards__button-container">
+                            <button class="button">Details</button>
+                            <button class="button">Add</button>
+                        </div>
+                    </li>
+
+                    <li class="main__content__cards__card">
+                        <p class="main__content__cards_name">Product name</p>
+                        <p class="main__content__cards_description">Product description</p>
+                        <div class="main__content__cards__button-container">
+                            <button class="button">Details</button>
+                            <button class="button">Add</button>
+                        </div>
+                    </li>
+
+                </ul>
+        </div>
+    </section>
 </template>
