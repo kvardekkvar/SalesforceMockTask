@@ -4,7 +4,7 @@
         <p class="header__accNumber" lwc:if={account.data}>{accountNumber}</p>
         <div class="header__buttons">
             <button lwc:if={isManager} class="button header__buttons__button">Create a product</button>
-            <button class="button header__buttons__button">Cart</button>
+            <button class="button header__buttons__button" onclick={openCartModal}>Cart</button>
         </div>
     </header>
     <section class="main">
@@ -14,24 +14,27 @@
             <ul lwc:if={typePicklistValues.data}>
                 <template for:each={typePicklistValues.data.values} for:item="type">
                     <li key={type.value}> - <span lwc:if={isSelected}>V</span> <a data-id={type.value} href="#"
-                                               onclick={handleTypeFilter}>{type.value} </a>
+                                                                                  onclick={handleTypeFilter}>{type.value} </a>
                     </li>
                 </template>
-                <li> - <span lwc:if={isSelected}>V</span> <a data-id="" href="#" onclick={handleTypeFilter}> Any </a></li>
+                <li> - <span lwc:if={isSelected}>V</span> <a data-id="" href="#" onclick={handleTypeFilter}> Any </a>
+                </li>
             </ul>
             <p>Family:</p>
             <ul lwc:if={familyPicklistValues.data}>
                 <template for:each={familyPicklistValues.data.values} for:item="family">
-                    <li key={family.value}> - <span lwc:if={isSelected}>V</span> <a data-id={family.value} href="#" onclick={handleFamilyFilter}>
+                    <li key={family.value}> - <span lwc:if={isSelected}>V</span> <a data-id={family.value} href="#"
+                                                                                    onclick={handleFamilyFilter}>
                         {family.value} </a></li>
                 </template>
-                <li> - <span lwc:if={isSelected}>V</span> <a data-id="" href="#" onclick={handleFamilyFilter}> Any </a></li>
+                <li> - <span lwc:if={isSelected}>V</span> <a data-id="" href="#" onclick={handleFamilyFilter}> Any </a>
+                </li>
             </ul>
 
         </form>
         <div class="main__content">
             <input class="main__content__search" type="text" name="search_products" placeholder="Search"
-               onchange={handleSearchInputChange} onkeypress={handleSearch}>
+                   onchange={handleSearchInputChange} onkeypress={handleSearch}>
             <ul lwc:if={products2} class="main__content__cards">
                 <template for:each={products2} for:item="product">
                     <li key={product.Id} class="main__content__cards__card">
@@ -40,30 +43,32 @@
                         <p class="main__content__cards_description">{product.Description__c}</p>
                         <div class="main__content__cards__button-container">
                             <button class="button" data-id={product.Id} onclick={openDetailsModal}>Details</button>
-                            <button class="button" data-id={product.Id} data-name={product.Name} onclick={addProductToCart}>Add</button>
+                            <button class="button" data-id={product.Id} data-name={product.Name}
+                                    onclick={addProductToCart}>Add
+                            </button>
                         </div>
                     </li>
                 </template>
             </ul>
         </div>
     </section>
-    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal product-details-modal">
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+             class="slds-modal product-details-modal">
         <div class="slds-modal__container">
             <div class="slds-modal__header">
                 <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Product details</h1>
             </div>
             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                {productForDetailsModal}
                 <lightning-record-view-form
                         object-api-name="Product__c"
                         record-id={productIdForDetailsModal}
                 >
-                    <lightning-output-field field-name="Name"> </lightning-output-field>
-                    <lightning-output-field field-name="Description__c"> </lightning-output-field>
-                    <lightning-output-field field-name="Type__c"> </lightning-output-field>
-                    <lightning-output-field field-name="Family__c"> </lightning-output-field>
-                    <lightning-output-field field-name="Price__c"> </lightning-output-field>
-                    <lightning-output-field field-name="Image__c"> </lightning-output-field>
+                    <lightning-output-field field-name="Name"></lightning-output-field>
+                    <lightning-output-field field-name="Description__c"></lightning-output-field>
+                    <lightning-output-field field-name="Type__c"></lightning-output-field>
+                    <lightning-output-field field-name="Family__c"></lightning-output-field>
+                    <lightning-output-field field-name="Price__c"></lightning-output-field>
+                    <lightning-output-field field-name="Image__c"></lightning-output-field>
 
                 </lightning-record-view-form>
 
@@ -75,7 +80,41 @@
     </section>
     <div class="slds-backdrop product-details-modal-backdrop"></div>
 
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+             class="slds-modal cart-modal">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h1 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Cart</h1>
+            </div>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                OLOLO Content
 
+
+                <table lwc:if={cart} class="cart__table">
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total price</th>
+                    </tr>
+                    <template for:each={cart} for:item="cartItem">
+                        <tr key={cartItem.product.Id}>
+                            <td>{cartItem.product.Name}</td>
+                            <td>{cartItem.product.Price__c} $</td>
+                            <td>{cartItem.quantity}</td>
+                            <td>{cartItem.total} $</td>
+                        </tr>
+                    </template>
+                </table>
+
+
+            </div>
+            <div class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={closeCartModal}>Close</button>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop cart-modal-modal-backdrop"></div>
 
 
 </template>

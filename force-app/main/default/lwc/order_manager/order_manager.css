@@ -73,3 +73,7 @@
     display:flex;
     justify-content: space-between;
 }
+
+.cart__table{
+    width:100%;
+}

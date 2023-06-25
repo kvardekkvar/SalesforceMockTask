@@ -22,7 +22,7 @@ export default class Order_manager extends LightningElement {
 
     userId = Id;
 
-    cart = {};
+
 
     @track
     typeFilter = '';
@@ -35,6 +35,9 @@ export default class Order_manager extends LightningElement {
 
     @track
     forceRerender = 0;
+
+    @track
+    cart = [];
 
     @track
     isDetailsModalShown = false;
@@ -140,24 +143,54 @@ export default class Order_manager extends LightningElement {
         modalBackdrop.classList.remove("slds-fade-in-open");
 
     }
+    openCartModal(event){
+    let modal = this.template.querySelector(".cart-modal");
+    let modalBackdrop = this.template.querySelector(".cart-modal-backdrop");
+
+    if(modal){
+        modal.classList.add("slds-fade-in-open");
+    }
+    if(modalBackdrop){
+        modalBackdrop.classList.add("slds-fade-in-open");
+    }
+    }
+
+    closeCartModal(){
+        var modal = this.template.querySelector(".cart-modal");
+        var modalBackdrop = this.template.querySelector(".cart-modal-backdrop");
+
+        modal.classList.remove("slds-fade-in-open");
+        modalBackdrop.classList.remove("slds-fade-in-open");
+    }
 
     addProductToCart(event){
         let productId = event.target.dataset.id;
-        let productName = event.target.dataset.name;
+        let product = this.products.data.filter(product => product.Id == productId)[0];
 
-        if (productId in this.cart){
-            this.cart[productId]++;
+        let existingCartItem = this.cart.filter(cartItem => cartItem.product.Id == productId);
+        if (existingCartItem.length > 0){
+            existingCartItem = existingCartItem[0];
+            existingCartItem.quantity++;
+            existingCartItem.total += product.Price__c;
         } else {
-            this.cart[productId] = 1;
+            let newCartItem = {};
+
+            newCartItem.quantity = 1;
+            newCartItem.product = product;
+            newCartItem.total = product.Price__c;
+            this.cart.push(newCartItem);
+            existingCartItem = newCartItem;
         }
 
         console.log(JSON.parse(JSON.stringify(this.cart)));
 
         const evt = new ShowToastEvent({
-            title: `Successfully added ${productName} to Cart`,
-            message: `Quantity of ${productName} in Cart: ` + this.cart[productId],
+            title: `Successfully added ${existingCartItem.product.Name} to Cart`,
+            message: `Quantity of ${existingCartItem.product.Name} in Cart: ` + existingCartItem.quantity,
             variant: 'success',
         });
         this.dispatchEvent(evt);
     }
+
+
 }
