@@ -1,9 +1,11 @@
-.THIS, * {
-background-color: #d3d3d3;
+.THIS {
+    background-color: #d3d3d3;
 }
 
 .button{
     border: 1px solid gray;
+    background-color: #d3d3d3;
+
 }
 
 .family-filter_selected{
@@ -48,6 +50,7 @@ background-color: #d3d3d3;
     min-width: 70%
 }
 .main__content__search{
+    background-color: #d3d3d3;
     border: 1px solid gray;
     width: 100%;
 }

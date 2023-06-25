@@ -33,6 +33,12 @@ export default class Order_manager extends LightningElement {
     @track
     forceRerender = 0;
 
+    @track
+    isDetailsModalShown = false;
+
+    @track
+    productIdForDetailsModal;
+
     @wire(CurrentPageReference)
     setCurrentPageReference(currentPageReference) {
         this.currentPageReference = currentPageReference;
@@ -108,6 +114,13 @@ export default class Order_manager extends LightningElement {
         if(event.keyCode === 13){
           this.forceRerender++;
         }
+    }
 
+    openDetailsModal(event){
+    this.isDetailsModalShown = true;
+    this.productIdForDetailsModal  = event.target.dataset.id;
+    }
+    closeDetailsModal(){
+    this.isDetailsModalShown = false;
     }
 }
