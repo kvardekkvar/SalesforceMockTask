@@ -40,7 +40,7 @@
                         <p class="main__content__cards_description">{product.Description__c}</p>
                         <div class="main__content__cards__button-container">
                             <button class="button" data-id={product.Id} onclick={openDetailsModal}>Details</button>
-                            <button class="button">Add</button>
+                            <button class="button" data-id={product.Id} data-name={product.Name} onclick={addProductToCart}>Add</button>
                         </div>
                     </li>
                 </template>

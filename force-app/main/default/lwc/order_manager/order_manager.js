@@ -3,6 +3,7 @@ import { CurrentPageReference } from 'lightning/navigation';
 import { getRecord } from 'lightning/uiRecordApi';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { getPicklistValues } from 'lightning/uiObjectInfoApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import getFilteredProducts from '@salesforce/apex/OrderManagerController.getFilteredProducts';
 import Id from '@salesforce/user/Id';
@@ -20,6 +21,8 @@ import User_IsManager__c from '@salesforce/schema/User.IsManager__c';
 export default class Order_manager extends LightningElement {
 
     userId = Id;
+
+    cart = {};
 
     @track
     typeFilter = '';
@@ -117,27 +120,16 @@ export default class Order_manager extends LightningElement {
     }
 
     openDetailsModal(event){
-        console.log("1st");
-
     this.productIdForDetailsModal  = event.target.dataset.id;
-
-        console.log("2nd");
-
     var modal = this.template.querySelector(".product-details-modal");
-
-           console.log("3nd");
     var modalBackdrop = this.template.querySelector(".product-details-modal-backdrop");
-            console.log("4th");
 
     if(modal){
         modal.classList.add("slds-fade-in-open");
     }
-    console.log("5th");
     if(modalBackdrop){
         modalBackdrop.classList.add("slds-fade-in-open");
     }
-    console.log("6th");
-
     }
 
     closeDetailsModal(){
@@ -147,5 +139,25 @@ export default class Order_manager extends LightningElement {
         modal.classList.remove("slds-fade-in-open");
         modalBackdrop.classList.remove("slds-fade-in-open");
 
+    }
+
+    addProductToCart(event){
+        let productId = event.target.dataset.id;
+        let productName = event.target.dataset.name;
+
+        if (productId in this.cart){
+            this.cart[productId]++;
+        } else {
+            this.cart[productId] = 1;
+        }
+
+        console.log(JSON.parse(JSON.stringify(this.cart)));
+
+        const evt = new ShowToastEvent({
+            title: `Successfully added ${productName} to Cart`,
+            message: `Quantity of ${productName} in Cart: ` + this.cart[productId],
+            variant: 'success',
+        });
+        this.dispatchEvent(evt);
     }
 }
