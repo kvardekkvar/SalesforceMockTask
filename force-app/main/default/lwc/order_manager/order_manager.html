@@ -30,9 +30,10 @@
 
         </form>
         <div class="main__content">
-            <input class="main__content__search" type="text" name="search_products" placeholder="Search">
-            <ul lwc:if={products.data} class="main__content__cards">
-                <template for:each={products.data} for:item="product">
+            <input class="main__content__search" type="text" name="search_products" placeholder="Search"
+               onchange={handleSearchInputChange} onkeypress={handleSearch}>
+            <ul lwc:if={products2} class="main__content__cards">
+                <template for:each={products2} for:item="product">
                     <li key={product.Id} class="main__content__cards__card">
 
                         <p class="main__content__cards_name">{product.Name}</p>

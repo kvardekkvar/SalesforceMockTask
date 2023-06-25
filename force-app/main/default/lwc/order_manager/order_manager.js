@@ -27,6 +27,12 @@ export default class Order_manager extends LightningElement {
     @track
     familyFilter = '';
 
+    @track
+    searchQuery = '';
+
+    @track
+    forceRerender = 0;
+
     @wire(CurrentPageReference)
     setCurrentPageReference(currentPageReference) {
         this.currentPageReference = currentPageReference;
@@ -63,6 +69,19 @@ export default class Order_manager extends LightningElement {
     get isManager(){
         return this.user.data?.fields.IsManager__c.value;
     }
+
+    get products2() {
+        if (this.products.data) {
+            return JSON.parse(JSON.stringify(
+                  this.products.data.filter(
+                      product => product.Description__c.toUpperCase().includes(this.searchQuery.toUpperCase())
+                      || product.Name.toUpperCase().includes(this.searchQuery.toUpperCase())
+                  )
+                  )
+                  );
+        }
+    }
+
     handleTypeFilter(event) {
         var previous = this.template.querySelector('.type-filter_selected');
         if (previous) {
@@ -81,4 +100,14 @@ export default class Order_manager extends LightningElement {
         this.familyFilter = event.target.dataset.id;
     }
 
+    handleSearchInputChange(event){
+        this.searchQuery = event.target.value;
+    }
+
+    handleSearch(event){
+        if(event.keyCode === 13){
+          this.forceRerender++;
+        }
+
+    }
 }
