@@ -117,10 +117,35 @@ export default class Order_manager extends LightningElement {
     }
 
     openDetailsModal(event){
-    this.isDetailsModalShown = true;
+        console.log("1st");
+
     this.productIdForDetailsModal  = event.target.dataset.id;
+
+        console.log("2nd");
+
+    var modal = this.template.querySelector(".product-details-modal");
+
+           console.log("3nd");
+    var modalBackdrop = this.template.querySelector(".product-details-modal-backdrop");
+            console.log("4th");
+
+    if(modal){
+        modal.classList.add("slds-fade-in-open");
     }
+    console.log("5th");
+    if(modalBackdrop){
+        modalBackdrop.classList.add("slds-fade-in-open");
+    }
+    console.log("6th");
+
+    }
+
     closeDetailsModal(){
-    this.isDetailsModalShown = false;
+        var modal = this.template.querySelector(".product-details-modal");
+        var modalBackdrop = this.template.querySelector(".product-details-modal-backdrop");
+
+        modal.classList.remove("slds-fade-in-open");
+        modalBackdrop.classList.remove("slds-fade-in-open");
+
     }
 }
