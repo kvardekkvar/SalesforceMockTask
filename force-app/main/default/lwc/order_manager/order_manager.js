@@ -4,6 +4,7 @@ import { getRecord } from 'lightning/uiRecordApi';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { getPicklistValues } from 'lightning/uiObjectInfoApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { NavigationMixin } from 'lightning/navigation';
 
 import getFilteredProducts from '@salesforce/apex/OrderManagerController.getFilteredProducts';
 import createOrder from '@salesforce/apex/OrderService.createOrder';
@@ -20,7 +21,7 @@ import User_IsManager__c from '@salesforce/schema/User.IsManager__c';
     'Account.AccountNumber'
     ];
 
-export default class Order_manager extends LightningElement {
+export default class Order_manager extends NavigationMixin(LightningElement) {
 
     userId = Id;
 
@@ -95,6 +96,12 @@ export default class Order_manager extends LightningElement {
                   );
         }
     }
+
+    get isCartEmpty(){
+        return this.cart.length == 0;
+    }
+
+
 
     handleTypeFilter(event) {
         var previous = this.template.querySelector('.type-filter_selected');
@@ -209,11 +216,25 @@ export default class Order_manager extends LightningElement {
         cartItemsIdAndQuantityList = JSON.parse(JSON.stringify(cartItemsIdAndQuantityList));
         console.log(cartItemsIdAndQuantityList);
         createOrder({accountIdString: this.accountId, cart: cartItemsIdAndQuantityList}).then(resultId => {
-                                   this.showSuccessMessage("Order was successfully created", "You will be redirected to order page")
+                                   this.showSuccessMessage("Order was successfully created", "You will be redirected to order page");
+                                   this.navigateToOrderPage(resultId);
                                })
                                .catch(error => {
                                    console.log(error);
                                });
         this.closeCartModal();
+
     }
+
+    navigateToOrderPage(orderId) {
+            this[NavigationMixin.Navigate]({
+                type: 'standard__recordPage',
+                attributes: {
+                    recordId: orderId,
+                    objectApiName: 'Order__c',
+                    actionName: 'view'
+                }
+            });
+    }
+
 }
