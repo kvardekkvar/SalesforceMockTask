@@ -14,7 +14,6 @@ import Id from '@salesforce/user/Id';
 import Product__c from '@salesforce/schema/Product__c';
 import Product__c_Type__c from '@salesforce/schema/Product__c.Type__c';
 import Product__c_Family__c from '@salesforce/schema/Product__c.Family__c';
-import User_IsManager__c from '@salesforce/schema/User.IsManager__c';
 
     const FIELDS = [
     'Account.Name',
@@ -24,8 +23,6 @@ import User_IsManager__c from '@salesforce/schema/User.IsManager__c';
 export default class Order_manager extends NavigationMixin(LightningElement) {
 
     userId = Id;
-
-
 
     @track
     typeFilter = '';
@@ -56,7 +53,7 @@ export default class Order_manager extends NavigationMixin(LightningElement) {
     @wire(getRecord, { recordId: "$accountId", fields: FIELDS })
     account;
 
-    @wire(getRecord, { recordId: "$userId", fields: [User_isManager__c] })
+    @wire(getRecord, { recordId: "$userId", fields: ['User.IsManager__c'] })
     user;
 
     @wire(getFilteredProducts, { filterType: "$typeFilter", filterFamily: "$familyFilter" })
@@ -82,6 +79,8 @@ export default class Order_manager extends NavigationMixin(LightningElement) {
     }
 
     get isManager(){
+        console.log("user " + this.userId );
+        console.log("lol " + this.user.data?.fields.IsManager__c.value);
         return this.user.data?.fields.IsManager__c.value;
     }
 
