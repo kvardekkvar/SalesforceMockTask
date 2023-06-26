@@ -6,6 +6,8 @@ import { getPicklistValues } from 'lightning/uiObjectInfoApi';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 import getFilteredProducts from '@salesforce/apex/OrderManagerController.getFilteredProducts';
+import createOrder from '@salesforce/apex/OrderService.createOrder';
+
 import Id from '@salesforce/user/Id';
 
 import Product__c from '@salesforce/schema/Product__c';
@@ -184,13 +186,34 @@ export default class Order_manager extends LightningElement {
 
         console.log(JSON.parse(JSON.stringify(this.cart)));
 
+        this.showSuccessMessage(`Successfully added ${existingCartItem.product.Name} to Cart`, `Quantity of ${existingCartItem.product.Name} in Cart: ` + existingCartItem.quantity)
+            }
+
+    showSuccessMessage(title, message){
         const evt = new ShowToastEvent({
-            title: `Successfully added ${existingCartItem.product.Name} to Cart`,
-            message: `Quantity of ${existingCartItem.product.Name} in Cart: ` + existingCartItem.quantity,
+            title: title,
+            message: message,
             variant: 'success',
         });
         this.dispatchEvent(evt);
     }
 
+    makeOrder(){
+        let cartItemsIdAndQuantityList = this.cart.map(cartItem => {
+            let entry ={};
+            entry.id = cartItem.product.Id;
+            entry.quantity = cartItem.quantity;
+            return entry;
+        });
 
+        cartItemsIdAndQuantityList = JSON.parse(JSON.stringify(cartItemsIdAndQuantityList));
+        console.log(cartItemsIdAndQuantityList);
+        createOrder({accountIdString: this.accountId, cart: cartItemsIdAndQuantityList}).then(resultId => {
+                                   this.showSuccessMessage("Order was successfully created", "You will be redirected to order page")
+                               })
+                               .catch(error => {
+                                   console.log(error);
+                               });
+        this.closeCartModal();
+    }
 }

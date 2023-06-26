@@ -87,9 +87,6 @@
                 <h1 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Cart</h1>
             </div>
             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
-                OLOLO Content
-
-
                 <table lwc:if={cart} class="cart__table">
                     <tr>
                         <th>Product</th>
@@ -106,11 +103,11 @@
                         </tr>
                     </template>
                 </table>
-
-
             </div>
             <div class="slds-modal__footer">
-                <button class="slds-button slds-button_brand" onclick={closeCartModal}>Close</button>
+                <button class="slds-button" onclick={closeCartModal}>Close</button>
+                <button class="slds-button slds-button_brand" onclick={makeOrder}>Checkout</button>
+
             </div>
         </div>
     </section>
