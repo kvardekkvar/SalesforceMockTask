@@ -21,6 +21,7 @@
     border: 1px solid gray;
     margin: 1rem;
     padding: 0.5rem;
+    min-width: max-content;
 }
 .header__buttons{
     text-align:right;
