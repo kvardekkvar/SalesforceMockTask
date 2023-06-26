@@ -2,6 +2,10 @@
     background-color: #d3d3d3;
 }
 
+.hidden{
+    display: none;
+}
+
 .button{
     border: 1px solid gray;
     background-color: #d3d3d3;

@@ -3,7 +3,7 @@
         <p class="header__accName" lwc:if={account.data}>{accountName}</p>
         <p class="header__accNumber" lwc:if={account.data}>{accountNumber}</p>
         <div class="header__buttons">
-            <button lwc:if={isManager} class="button header__buttons__button">Create a product</button>
+            <button lwc:if={isManager} class="button header__buttons__button" onclick={openCreateProductModal}>Create a product</button>
             <button class="button header__buttons__button" onclick={openCartModal}>Cart</button>
         </div>
     </header>
@@ -78,7 +78,7 @@
             </div>
         </div>
     </section>
-    <div class="slds-backdrop product-details-modal-backdrop"></div>
+    <div class="slds-backdrop modal-backdrop"></div>
 
     <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
              class="slds-modal cart-modal">
@@ -112,7 +112,34 @@
             </div>
         </div>
     </section>
-    <div class="slds-backdrop cart-modal-modal-backdrop"></div>
 
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+             class="slds-modal create-product-modal">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h1 id="modal-heading-03" class="slds-modal__title slds-hyphenate">Create new Product</h1>
+            </div>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                    <lightning-record-edit-form class="create-product-form" object-api-name="Product__c" onsuccess={handleSuccessCreateProduct}>
+                        <lightning-messages> </lightning-messages>
+                        <lightning-input-field field-name="Name" required="true"> </lightning-input-field>
+                        <lightning-input-field field-name="Description__c" required="true"> </lightning-input-field>
+                        <lightning-input-field field-name="Price__c" required="true"> </lightning-input-field>
+                        <lightning-input-field field-name="Type__c"> </lightning-input-field>
+                        <lightning-input-field field-name="Family__c"> </lightning-input-field>
+                        <lightning-input-field field-name="Image__c"> </lightning-input-field>
+                        <lightning-button
+                                class="slds-m-top_small hidden hidden-create-product-submit-button"
+                                type="submit"
+                                label="Create new"
+                        ></lightning-button>
+                    </lightning-record-edit-form>
+            </div>
+            <div class="slds-modal__footer">
+                <button class="slds-button" onclick={closeCreateProductModal}>Close</button>
+                <button class="slds-button slds-button_brand"  type="submit" onclick={createProduct}>Create</button>
 
+            </div>
+        </div>
+    </section>
 </template>

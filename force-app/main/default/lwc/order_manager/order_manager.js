@@ -79,8 +79,6 @@ export default class Order_manager extends NavigationMixin(LightningElement) {
     }
 
     get isManager(){
-        console.log("user " + this.userId );
-        console.log("lol " + this.user.data?.fields.IsManager__c.value);
         return this.user.data?.fields.IsManager__c.value;
     }
 
@@ -131,41 +129,60 @@ export default class Order_manager extends NavigationMixin(LightningElement) {
     }
 
     openDetailsModal(event){
-    this.productIdForDetailsModal  = event.target.dataset.id;
-    var modal = this.template.querySelector(".product-details-modal");
-    var modalBackdrop = this.template.querySelector(".product-details-modal-backdrop");
+        this.productIdForDetailsModal  = event.target.dataset.id;
+        let modal = this.template.querySelector(".product-details-modal");
+        let modalBackdrop = this.template.querySelector(".modal-backdrop");
 
-    if(modal){
-        modal.classList.add("slds-fade-in-open");
-    }
-    if(modalBackdrop){
-        modalBackdrop.classList.add("slds-fade-in-open");
-    }
+        if(modal){
+            modal.classList.add("slds-fade-in-open");
+        }
+        if(modalBackdrop){
+            modalBackdrop.classList.add("slds-fade-in-open");
+        }
     }
 
     closeDetailsModal(){
-        var modal = this.template.querySelector(".product-details-modal");
-        var modalBackdrop = this.template.querySelector(".product-details-modal-backdrop");
+        let modal = this.template.querySelector(".product-details-modal");
+        let modalBackdrop = this.template.querySelector(".modal-backdrop");
 
         modal.classList.remove("slds-fade-in-open");
         modalBackdrop.classList.remove("slds-fade-in-open");
 
     }
     openCartModal(event){
-    let modal = this.template.querySelector(".cart-modal");
-    let modalBackdrop = this.template.querySelector(".cart-modal-backdrop");
+        let modal = this.template.querySelector(".cart-modal");
+        let modalBackdrop = this.template.querySelector(".modal-backdrop");
 
-    if(modal){
-        modal.classList.add("slds-fade-in-open");
-    }
-    if(modalBackdrop){
-        modalBackdrop.classList.add("slds-fade-in-open");
-    }
+        if(modal){
+            modal.classList.add("slds-fade-in-open");
+        }
+        if(modalBackdrop){
+            modalBackdrop.classList.add("slds-fade-in-open");
+        }
     }
 
     closeCartModal(){
-        var modal = this.template.querySelector(".cart-modal");
-        var modalBackdrop = this.template.querySelector(".cart-modal-backdrop");
+        let modal = this.template.querySelector(".cart-modal");
+        let modalBackdrop = this.template.querySelector(".modal-backdrop");
+
+        modal.classList.remove("slds-fade-in-open");
+        modalBackdrop.classList.remove("slds-fade-in-open");
+    }
+    openCreateProductModal(event){
+        let modal = this.template.querySelector(".create-product-modal");
+        let modalBackdrop = this.template.querySelector(".modal-backdrop");
+
+        if(modal){
+            modal.classList.add("slds-fade-in-open");
+        }
+        if(modalBackdrop){
+            modalBackdrop.classList.add("slds-fade-in-open");
+        }
+    }
+
+    closeCreateProductModal(event){
+        let modal = this.template.querySelector(".create-product-modal");
+        let modalBackdrop = this.template.querySelector(".modal-backdrop");
 
         modal.classList.remove("slds-fade-in-open");
         modalBackdrop.classList.remove("slds-fade-in-open");
@@ -236,4 +253,24 @@ export default class Order_manager extends NavigationMixin(LightningElement) {
             });
     }
 
+    createProduct(event){
+         event.stopPropagation();
+         let submitButton = this.template.querySelector( ".hidden-create-product-submit-button" );
+         if( submitButton ){
+            submitButton.click();
+         }
+    }
+
+    handleSuccessCreateProduct(event){
+        console.log("lol 1");
+        event.stopPropagation();
+        console.log("lol 2");
+        this.showSuccessMessage("Product was successfully created", "");
+        console.log("lol 3");
+        this.forceRerender++;
+        console.log("lol 4");
+        this.closeCreateProductModal(event);
+
+
+    }
 }
