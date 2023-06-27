@@ -2,8 +2,6 @@ public class OrderService {
 
 	@AuraEnabled
 	public static ID createOrder(String accountIdString, List<Map<String, Object>> cart){
-		System.debug('Alive');
-
 		List<ID> productIds = new List<Id>();
 		Map<ID, Integer> productsQuantities = new Map<Id, Integer>();
 		ID accountId = (ID) accountIdString;

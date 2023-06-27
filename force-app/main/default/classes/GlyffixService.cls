@@ -1,7 +1,6 @@
 public class GlyffixService {
-	@future (callout=true)
-	public static void getImageUrl(ID recordId){
-		System.debug('OLOLO');
+	@future (callout = true)
+	public static void getImageUrl(ID recordId) {
 		Product__c record = [SELECT ID, Name, Image__c FROM Product__c WHERE Id = :recordId];
 		Http http = new Http();
 		HttpRequest request = new HttpRequest();
@@ -13,11 +12,12 @@ public class GlyffixService {
 		request.setHeader('Content-Type', 'application/json;charset=UTF-8');
 		HttpResponse response = http.send(request);
 		// Parse the JSON response
-		if(response.getStatusCode() != 200) {
-			System.debug('The status code returned was not expected: ' + response.getStatusCode() + ' ' + response.getStatus());
+		if (response.getStatusCode() != 200) {
+			System.debug('The status code returned was not expected: ' + response.getStatusCode() + ' ' +
+					response.getStatus());
 		} else {
 			GlyffixPOJO glyffixPOJO = GlyffixPOJO.parse(response.getBody());
-			if (glyffixPOJO.data.size()>0){
+			if (glyffixPOJO.data != null && glyffixPOJO.data.size() > 0) {
 				record.Image__c = glyffixPOJO.data.get(0).imageurl;
 			}
 		}
